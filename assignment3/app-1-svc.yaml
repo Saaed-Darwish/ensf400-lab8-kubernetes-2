@@ -6,6 +6,6 @@ spec:
   selector:
     app: app1
   ports:
-  - port: 3000
+  - port: 8080
     protocol: TCP
-    targetPort: 3000
+    targetPort: 8080
