@@ -18,4 +18,4 @@ spec:
           service:
             name: app-2-svc
             port:
-              number: 80
+              number: 3001

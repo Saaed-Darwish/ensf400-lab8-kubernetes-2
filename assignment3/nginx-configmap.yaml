@@ -6,8 +6,8 @@ data:
   nginx.conf: |
     http {
       upstream backend {
-        server app-1-svc:80;
-        server app-2-svc:80;
+        server app-1-svc:3000;
+        server app-2-svc:3001;
       }
 
       server {
