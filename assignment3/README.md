@@ -44,6 +44,11 @@ Apply all yaml files with this command to kubectl:
 kubectl apply -f .
 ```
 
+Enable the addon Ingress to the minikube profile:
+```bash
+minikube addons enable ingress -p ensf400
+```
+
 ## Curl
 
 ### To curl the Applications
@@ -52,6 +57,7 @@ I used the following command to curl the application - as with the lab; the foll
 ```bash
 curl http://$(minikube ip -p ensf400); echo
 ```
+If the response contains 503 Service Temporarily Unavailable please wait a moment for everything to setup properly then re-run the curl command.
 
 ### Responses and Outputs
 
