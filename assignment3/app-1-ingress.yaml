@@ -5,8 +5,7 @@ metadata:
   labels:
     app: app1
   annotations:
-    nginx.ingress.kubernetes.io/canary: "true"
-    nginx.ingress.kubernetes.io/canary-weight: "70"
+    nginx.ingress.kubernetes.io/canary: "false"
 spec:
   rules:
   - http:
