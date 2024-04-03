@@ -1,49 +1,118 @@
-# ENSF 400 - Assignment 3 - Kubernetes
+# Assignment 3 - Steps and Outputs
 
-This assignment has a full mark of 100. It takes up 5\% of your final grade. 
+## Setup
 
-You will use Minikube in Codespaces to deploy an nginx service an 2 backend apps.
+### Start minikube:
 
-## Requirements
+If minikube hasn't been started already:
 
-Based on your work for [Lab 7](https://github.com/denoslab/ensf400-lab7-kubernetes-1) and [Lab 8](https://github.com/denoslab/ensf400-lab8-kubernetes-2), deploy an `nginx` service so that:
-
-1. A `Deployment` config defined in `nginx-dep.yaml`. The Deployment has the name `nginx-dep` with 5 replicas. The Deployment uses a base image `nginx` with the version tag `1.14.2`. Expose port `80`.
-1. A `ConfigMap` defined in `nginx-configmap.yaml`, The `data` in the configmap has a key-value pair with the key being `nginx.cfg` and value being the following:
-```
-upstream backend {
-    server app-1:8080;
-    server app-2:8080;
-}
-
-server {
-    location / {
-        proxy_pass http://backend;
-    }
-}
-```
-1. In the Deployment `nginx-dep`, mount the configuration file `default.conf` to the correct path of `/etc/nginx/conf.d` so that it serves as a load balancer, similar to what we have for [Assignment 2](https://github.com/denoslab/ensf400-lab5-ansible/tree/main/assignment2).
-1. A `Service` config of type `ClusterIP` defined in `nginx-svc.yaml`. The service has the name `nginx-svc`, exposes port `80`, and should use label selectors to select the pods from the `Deployment` defined in the last step.
-1. An `Ingress` config named `nginx-ingress.yaml` redirecting the requests to path `/` to the backend service `nginx-svc`. Example request and response:
 ```bash
-$ curl http://$(minikube ip)/
-Hello World from [app-1-dep-86f67f4f87-2d28z]!
-$ curl http://$(minikube ip)/
-Hello World from [app-2-dep-7f686c4d8d-lr95c]!
+minikube start --nodes 3 -p ensf400
 ```
-1. Write `Deployment` and `Service` for `app-1` and `app-2`, respectively.
-1. Define two other `Ingress` configs named `app-1-ingress.yaml` and `app-2-ingress.yaml`, both redicting requests to `/app` to the backend apps, taking `app-1` as the main deployment, and `app-2` as a canary deployment. The ingresses will redirect 70% of the traffic to `app-1` and 30% of the traffic to `app-2`. The docker images are pre-built for you. They can be downloaded using the URL below:
-```
-app-1: ghcr.io/denoslab/ensf400-sample-app:v1
-app-2: ghcr.io/denoslab/ensf400-sample-app:v2
+If profile exists - the instance was stopped, you can restart the profile with:
+
+```bash
+minikube start -p ensf400
 ```
 
-## Deliverables
+### cd Into Assignment3 Folder
 
-1. (10%) `nginx-dep.yaml`
-1. (10%) `nginx-configmap.yaml`
-1. (10%) `nginx-svc.yaml`
-1. (20%) `nginx-ingress.yaml`. Include steps showing the requests using `curl` and responses from load-balanced app backends (`app-1` and `app-2`).
-1. (15%) `app-1-dep.yaml`, `app-1-svc.yaml`, `app-2-dep.yaml`, `app-2-svc.yaml`.
-1. (20%) `app-1-ingress.yaml` and `app-2-ingress.yaml`.
-1. (15%) A `README.md` Markdown file describing the steps and outputs meeting the requirements. 
+Now cd into the assignment3 folder.
+
+```bash
+cd ./assignment3
+```
+
+Assignment3 folder contains:
+- nginx-dep.yaml
+- nginx-configmap.yaml
+- nginx-svc.yaml
+- nginx-ingress.yaml
+- app-1-dep.yaml
+- app-1-svc.yaml
+- app-2-dep.yaml
+- app-2-svc.yaml
+- app-1-ingress.yaml
+- app-2-ingress.yaml
+- README.md
+- test.sh
+
+### Run the Following to Apply and Deploy
+
+Apply all yaml files with this command to kubectl:
+```bash
+kubectl apply -f .
+```
+
+## Curl
+
+### To curl the Applications
+
+I used the following command to curl the application - as with the lab; the following minikube profile created was ensf400 so I just add the specification here, with an added echo to just print a newline character after the response:
+```bash
+curl http://$(minikube ip -p ensf400); echo
+```
+
+### Responses and Outputs
+
+Here are some curls including their responses and outputs:
+```bash
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2/assignment3 (main) $ curl http://$(minikube ip -p ensf400); echo
+Hello World from [app-2-dep-5887f59cc-nqvjm]!
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2/assignment3 (main) $ curl http://$(minikube ip -p ensf400); echo
+Hello World from [app-1-dep-5645659dfd-dw6w5]!
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2/assignment3 (main) $ curl http://$(minikube ip -p ensf400); echo
+Hello World from [app-1-dep-5645659dfd-dw6w5]!
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2/assignment3 (main) $ curl http://$(minikube ip -p ensf400); echo
+Hello World from [app-1-dep-5645659dfd-dw6w5]!
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2/assignment3 (main) $ curl http://$(minikube ip -p ensf400); echo
+Hello World from [app-1-dep-5645659dfd-dw6w5]!
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2/assignment3 (main) $ curl http://$(minikube ip -p ensf400); echo
+Hello World from [app-2-dep-5887f59cc-nqvjm]!
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2/assignment3 (main) $ curl http://$(minikube ip -p ensf400); echo
+Hello World from [app-1-dep-5645659dfd-dw6w5]!
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2/assignment3 (main) $ curl http://$(minikube ip -p ensf400); echo
+Hello World from [app-1-dep-5645659dfd-dw6w5]!
+```
+
+### Outputs Meeting the Requirements
+
+To make sure the ingresses are in fact redirecting 70% of the traffic to app-1 and 30% to app-2, I created a simple test.sh script. This curls the applications 100 times (may take about a minute or two) then calculates the percentage from the amount of times app-1 responds and app-2 responds. Here are the results of 5 runs:
+
+1. 
+- App1 responses: 75
+- App2 responses: 25
+- App1 percentage: 75%
+- App2 percentage: 25%
+
+2.
+- App1 responses: 67
+- App2 responses: 33
+- App1 percentage: 67%
+- App2 percentage: 33%
+
+3.
+- App1 responses: 70
+- App2 responses: 30
+- App1 percentage: 70%
+- App2 percentage: 30%
+
+4.
+- App1 responses: 77
+- App2 responses: 23
+- App1 percentage: 77%
+- App2 percentage: 23%
+
+5.
+- App1 responses: 63
+- App2 responses: 37
+- App1 percentage: 63%
+- App2 percentage: 37%
+
+Running test.sh yourself is easy. You may change the number of requests in test.sh itself as well to increase accuracy - note these take a while to run so I use 100 requests as the default. To run test.sh:
+```bash
+chmod +x test.sh
+```
+```bash
+./test.sh
+```
