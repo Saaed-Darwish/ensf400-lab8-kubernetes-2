@@ -9,10 +9,9 @@ metadata:
     nginx.ingress.kubernetes.io/canary-weight: "30"
 spec:
   rules:
-  - host: example.com
-    http:
+  - http:
       paths:
-      - path: /app
+      - path: /
         pathType: Prefix
         backend:
           service:
