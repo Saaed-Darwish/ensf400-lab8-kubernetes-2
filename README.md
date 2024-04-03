@@ -1,5 +1,7 @@
 # Combined-README.md Info From Lab/Assignment
 
+Please note, if you are looking for the created README.md for assignment3 it is in the assignment3 folder.
+
 ## Environment
 
 ### Set Up Your GitHub CodeSpaces Instance
