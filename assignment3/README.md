@@ -83,6 +83,16 @@ Hello World from [app-1-dep-5645659dfd-dw6w5]!
 
 ### Outputs Meeting the Requirements
 
+A Service config of type ClusterIP defined in nginx-svc.yaml. The default type is ClusterIP so no specification of the type should automatically fallback to the default ClusterIP type. Just to make sure here is the kubectl get svc command and output.
+```bash
+@Saaed-Darwish ➜ /workspaces/ensf400-lab8-kubernetes-2 (main) $ kubectl get svc
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+app-1-svc    ClusterIP   10.100.77.129   <none>        8080/TCP   38h
+app-2-svc    ClusterIP   10.100.213.48   <none>        8080/TCP   38h
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP    38h
+nginx-svc    ClusterIP   10.99.103.60    <none>        80/TCP     38h
+```
+
 To make sure the ingresses are in fact redirecting 70% of the traffic to app-1 and 30% to app-2, I created a simple test.sh script. This curls the applications 100 times (may take about a minute or two) then calculates the percentage from the amount of times app-1 responds and app-2 responds. Here are the results of 5 runs:
 
 1. 
